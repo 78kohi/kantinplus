@@ -1,12 +1,17 @@
 import { useState } from 'react'
-
-import './App.css'
+import Home from './pages/Home'
+import Products from './pages/Products'
+import NavBar from './components/NavBar'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const activePage = window.location.pathname === '/' ? 'home' : window.location.pathname.substring(1);
 
   return (
-    <h1>Testing bolo</h1>
+    <>
+      <NavBar activePage={activePage} />
+      <Home />
+      <Products />
+    </>
   )
 }
 

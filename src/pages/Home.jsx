@@ -1,6 +1,7 @@
 import HeroContent from "../components/HeroContent";
 import Peaks from "../components/Peaks";
 import Products from "./Products";
+import gabin from "../assets/gabin.png";
 
 export default function Home() {
 

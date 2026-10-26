@@ -1,92 +1,63 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-export default function ProductCart({ product, onAddToCart }) {
-  const [quantity, setQuantity] = useState(1);
-
-  // Warna aksen badge sesuai varian (default diganti navy/slate)
-  const getVariantBadge = (variant) => {
-    switch (variant?.toLowerCase()) {
-      case 'cokelat':
-        return 'bg-amber-100 text-amber-800 border-amber-300';
-      case 'susu':
-        return 'bg-blue-100 text-blue-800 border-blue-300';
-      case 'matcha':
-        return 'bg-emerald-100 text-emerald-800 border-emerald-300';
-      default:
-        return 'bg-slate-100 text-slate-800 border-slate-300';
-    }
-  };
-
-  const handleDecrease = () => {
-    if (quantity > 1) setQuantity(quantity - 1);
-  };
-
-  const handleIncrease = () => {
-    setQuantity(quantity + 1);
-  };
+export default function ProductCart({ cartItems = [], onUpdateQuantity, onRemoveItem }) {
+  // Hitung total harga keseluruhan
+  const totalPrice = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
 
   return (
-    <div className="bg-white/90 backdrop-blur-md rounded-3xl p-4 shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-200 flex flex-col justify-between group transform hover:-translate-y-1">
-      <div>
-        {/* Container Gambar dengan Background Gradient Nuansa Navy / Slate */}
-        <div className="relative w-full h-48 rounded-2xl overflow-hidden bg-gradient-to-tr from-slate-100 via-blue-50 to-indigo-100 flex items-center justify-center p-3 mb-4">
-          <span className={`absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold border backdrop-blur-sm ${getVariantBadge(product?.variant)}`}>
-            {product?.variant || 'Gabin Fla'}
-          </span>
-          <img 
-            src={product?.image || "https://via.placeholder.com/250"} 
-            alt={product?.name || "Gabin Fla"} 
-            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-          />
-        </div>
+    <div className="bg-white rounded-2xl shadow-md p-6 border border-slate-100 max-w-md w-full">
+      <h3 className="text-xl font-bold text-slate-900 mb-4 border-b pb-2">Keranjang Belanja</h3>
 
-        {/* Detail Produk */}
-        <div className="px-1">
-          <h3 className="text-xl font-bold text-gray-800 leading-tight mb-1">
-            {product?.name || "Gabin Fla"}
-          </h3>
-          <p className="text-2xl font-black text-emerald-600 mb-2">
-            Rp {(product?.price || 8000).toLocaleString('id-ID')}
-          </p>
-          <p className="text-xs text-gray-500 font-medium line-clamp-3 leading-relaxed mb-4">
-            {product?.description || "Jajanan tradisional biskuit gabin dengan isian adonan fla manis & lembut. Isi 2 pcs per kemasan."}
-          </p>
-        </div>
-      </div>
+      {cartItems.length === 0 ? (
+        <p className="text-slate-500 text-center py-8 text-sm">Keranjang kamu masih kosong, nih.</p>
+      ) : (
+        <div className="space-y-4">
+          {/* Daftar Item di Keranjang */}
+          {cartItems.map((item) => (
+            <div key={item.id} className="flex items-center justify-between border-b pb-3">
+              <div>
+                <h4 className="font-semibold text-slate-800 text-sm">{item.name}</h4>
+                <p className="text-blue-900 text-xs font-bold">Rp {item.price.toLocaleString('id-ID')}</p>
+              </div>
 
-      {/* Bagian Bawah: Pengatur Jumlah Kuantitas & Tombol Tambah Keranjang */}
-      <div className="flex items-center justify-between gap-3 pt-2">
-        {/* Tombol - 1 + */}
-        <div className="flex items-center bg-gray-100 rounded-full px-3 py-1.5 border border-gray-200">
-          <button 
-            onClick={handleDecrease}
-            className="text-gray-500 hover:text-slate-900 font-bold text-lg px-1 transition-colors disabled:opacity-30"
-            disabled={quantity <= 1}
-          >
-            −
+              <div className="flex items-center space-x-2">
+                {/* Tombol Kurangi Kuantitas */}
+                <button 
+                  onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
+                  className="w-7 h-7 bg-slate-100 rounded-lg font-bold text-slate-700 hover:bg-slate-200"
+                >
+                  -
+                </button>
+                <span className="text-sm font-semibold w-6 text-center">{item.quantity}</span>
+                {/* Tombol Tambah Kuantitas */}
+                <button 
+                  onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                  className="w-7 h-7 bg-blue-900 text-white rounded-lg font-bold hover:bg-blue-800"
+                >
+                  +
+                </button>
+                {/* Tombol Hapus Item */}
+                <button 
+                  onClick={() => onRemoveItem(item.id)}
+                  className="text-red-500 text-xs font-semibold ml-2 hover:underline"
+                >
+                  Hapus
+                </button>
+              </div>
+            </div>
+          ))}
+
+          {/* Bagian Total Harga */}
+          <div className="pt-4 flex items-center justify-between font-bold text-slate-900 text-base">
+            <span>Total:</span>
+            <span className="text-blue-900">Rp {totalPrice.toLocaleString('id-ID')}</span>
+          </div>
+
+          <button className="w-full mt-4 bg-blue-900 text-white py-2.5 rounded-xl font-bold text-sm hover:bg-blue-800 transition">
+            Checkout Sekarang
           </button>
-          <span className="text-sm font-bold text-gray-800 mx-3 min-w-[16px] text-center">
-            {quantity}
-          </span>
-          <button 
-            onClick={handleIncrease}
-            className="text-gray-500 hover:text-slate-900 font-bold text-lg px-1 transition-colors"
-          >
-            +
-          </button>
         </div>
-
-        {/* Tombol Tambah Keranjang Bulat (+) dengan Aksen Navy/Dark */}
-        <button 
-          onClick={() => onAddToCart && onAddToCart(product, quantity)}
-          className="w-11 h-11 bg-slate-900 hover:bg-slate-800 text-white rounded-full flex items-center justify-center shadow-md hover:shadow-slate-400 transition-all duration-300 active:scale-95"
-          title="Tambah ke Keranjang"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4"></path>
-          </svg>
-        </button>
-      </div>
+      )}
     </div>
   );
 }

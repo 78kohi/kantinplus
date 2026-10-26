@@ -1,55 +1,51 @@
 import React from 'react';
-import ProductCart from './ProductCart';
+import ProductCard from './ProductCard'; // Pastikan path impor ini sesuai dengan letak file ProductCard
 
 export default function ProductGrid() {
-  // Data 3 Varian Produk Gabin Fla Gen-Z dengan Tema Navy
+  // Data dummy varian Gabin Fla dengan tema navy
   const products = [
     {
       id: 1,
-      name: "Gabin Fla Cokelat",
-      variant: "Cokelat",
-      price: 8000,
-      description: "Jajanan tradisional renyah dengan isian adonan fla cokelat manis & legit. Isi 2 pcs per kemasan.",
-      image: "https://via.placeholder.com/250/1E293B/FFFFFF?text=Gabin+Cokelat"
+      name: 'Gabin Fla Original Susu',
+      description: 'Biskuit gabin renyah dengan isian fla susu manis yang lumer di mulut.',
+      price: 15000,
+      category: 'Best Seller',
+      image: '' 
     },
     {
       id: 2,
-      name: "Gabin Fla Susu",
-      variant: "Susu",
-      price: 8000,
-      description: "Biskuit gabin renyah dipadu fla susu creamy dan lumer di mulut. Isi 2 pcs per kemasan.",
-      image: "https://via.placeholder.com/250/1E3A8A/FFFFFF?text=Gabin+Susu"
+      name: 'Gabin Fla Cokelat Premium',
+      description: 'Perpaduan gabin gurih dan fla cokelat rich yang bikin ketagihan.',
+      price: 18000,
+      category: 'Favorite',
+      image: ''
     },
     {
       id: 3,
-      name: "Gabin Fla Matcha",
-      variant: "Matcha",
-      price: 8000,
-      description: "Kombinasi biskuit gabin dengan isian adonan fla matcha kekinian bermutu tinggi. Isi 2 pcs per kemasan.",
-      image: "https://via.placeholder.com/250/0F172A/FFFFFF?text=Gabin+Matcha"
+      name: 'Gabin Fla Matcha Green Tea',
+      description: 'Rasa matcha Jepang yang khas berpadu sempurna dengan lembutnya fla.',
+      price: 20000,
+      category: 'New',
+      image: ''
     }
   ];
 
-  const handleAddToCart = (product, quantity) => {
-    alert(`Berhasil menambahkan ${quantity}x ${product.name} ke keranjang!`);
-  };
-
   return (
-    <section className="py-10 px-4 max-w-6xl mx-auto">
-      <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-blue-800 to-indigo-900 mb-2">
-          Gabin Fla Series ✨
-        </h2>
-        <p className="text-gray-600 max-w-lg mx-auto text-sm md:text-base">
-          Jajanan tradisional hits biskuit gabin isi adonan fla lumer (2 pcs/kemasan) seharga Rp 8.000!
-        </p>
-      </div>
+    <section id="products" className="py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 min-h-screen">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-extrabold text-slate-900 mb-2">Menu Pilihan Gabin Fla</h2>
+          <p className="text-slate-600 max-w-xl mx-auto text-sm">
+            Nikmati kelezatan jajanan tradisional dengan sentuhan modern khas Kantinplus.
+          </p>
+        </div>
 
-      {/* Tampilan Grid Produk */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.map((item) => (
-          <ProductCart key={item.id} product={item} onAddToCart={handleAddToCart} />
-        ))}
+        {/* Grid Container */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
       </div>
     </section>
   );

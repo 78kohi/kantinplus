@@ -1,25 +1,16 @@
 import { useState } from 'react'
 import Home from './pages/Home'
-import Products from './pages/Products'
-import NavBar from './components/NavBar'
-import Footer from './components/Footer';
-import CartPill from './components/CartPill';
-import Toast from './components/Toast';
+import { Route, Routes } from 'react-router';
+import Payment from './pages/Payment';
 
 function App() {
   const activePage = window.location.pathname === '/' ? 'home' : window.location.pathname.substring(1);
-  let showToast = false;
 
   return (
-    <>
-      <NavBar activePage={activePage} />
-      <Home />
-      <Products />
-      <Footer />
-      
-      <CartPill />
-      {showToast && <Toast />}
-    </>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/bayar" element={<Payment />} />
+    </Routes>
   )
 }
 

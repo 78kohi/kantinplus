@@ -1,15 +1,93 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router';
-import OrderSummary from '../components/OrderSummary';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router";
+import OrderSummary from "../components/OrderSummary";
+import { createOrder } from "../services/orderService";
+import Toast from "../components/Toast";
 
 export default function Payment({
   cartItems = [],
   subtotal = 0,
   onChangeCartQuantity,
   onRemoveFromCart,
+  toast,
+  onShowToast,
+  onClearToast,
+  onClearCart,
 }) {
-  const [orderType, setOrderType] = useState('delivery');
-  const shippingCost = orderType === 'delivery' ? 10000 : 0;
+  const [orderType, setOrderType] = useState("pickup");
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [orderId, setOrderId] = useState(null);
+  const [checkoutError, setCheckoutError] = useState("");
+  const shippingCost = orderType === "delivery" ? 10000 : 0;
+
+  const navigate = useNavigate();
+
+  const handlePlaceOrder = async () => {
+    if (submitting) return;
+
+    if (!customerName.trim()) {
+      onShowToast(
+        "Nama belum diisi",
+        "Masukkan nama pemesan terlebih dahulu.",
+        "error",
+      );
+      return;
+    }
+
+    if (cartItems.length === 0) {
+      onShowToast(
+        "Keranjang kosong",
+        "Tambahkan produk terlebih dahulu.",
+        "error",
+      );
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      const id = await createOrder({
+        cart: cartItems,
+        customerName: customerName.trim(),
+        customerPhone: customerPhone.trim(),
+      });
+
+      const orderDetails = {
+        orderId: id,
+        items: cartItems,
+        total: subtotal + shippingCost,
+        customerName: customerName.trim(),
+      };
+
+      onClearCart();
+
+      navigate("/pembayaran", {
+        state: orderDetails,
+      });
+    } catch (error) {
+      console.error("Checkout failed:", error);
+
+      const message = error?.message || "";
+
+      if (/stock|stok|available|availability/i.test(message)) {
+        onShowToast(
+          "Stok berubah",
+          "Stok produk mungkin sudah berubah. Periksa keranjangmu lalu coba lagi.",
+          "error",
+        );
+      } else {
+        onShowToast(
+          "Pesanan gagal",
+          "Pesanan belum berhasil dibuat. Silakan coba lagi.",
+          "error",
+        );
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   if (cartItems.length === 0) {
     return (
@@ -18,7 +96,9 @@ export default function Payment({
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#a2d6f9] text-3xl text-[#19334b]">
             🛒
           </div>
-          <h2 className="text-2xl font-extrabold text-[#19334b]">Keranjang masih kosong</h2>
+          <h2 className="text-2xl font-extrabold text-[#19334b]">
+            Keranjang masih kosong
+          </h2>
           <p className="mt-2 text-sm text-slate-500">
             Pilih produk favoritmu dulu sebelum lanjut ke checkout.
           </p>
@@ -48,25 +128,29 @@ export default function Payment({
 
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-2">
           <div className="space-y-6 rounded-2xl border border-[#e8e4d8] bg-[#fffdf5] p-6 shadow-[0_12px_40px_rgba(25,51,75,0.08)]">
-            <h3 className="text-xl font-extrabold text-[#19334b]">Detail pembayaran</h3>
+            <h3 className="text-xl font-extrabold text-[#19334b]">
+              Detail pembayaran
+            </h3>
 
             <div className="space-y-3">
-              <label className="text-sm font-bold text-[#19334b]">Pilihan pengiriman</label>
+              <label className="text-sm font-bold text-[#19334b]">
+                Pilihan pengiriman
+              </label>
 
               <div className="grid gap-2 sm:grid-cols-2">
                 <label
                   className={`flex cursor-pointer items-center justify-between rounded-xl border p-3 transition ${
-                    orderType === 'delivery'
-                      ? 'border-[#19334b] bg-[#eaf5fe] text-[#19334b]'
-                      : 'border-[#e8e4d8] bg-white text-slate-600 hover:bg-[#f7fbff]'
+                    orderType === "delivery"
+                      ? "border-[#19334b] bg-[#eaf5fe] text-[#19334b]"
+                      : "border-[#e8e4d8] bg-white text-slate-600 hover:bg-[#f7fbff]"
                   }`}
                 >
                   <div className="flex items-center gap-3">
                     <input
                       type="radio"
                       name="orderType"
-                      checked={orderType === 'delivery'}
-                      onChange={() => setOrderType('delivery')}
+                      checked={orderType === "delivery"}
+                      onChange={() => setOrderType("delivery")}
                       className="text-[#19334b]"
                     />
                     <span className="text-sm font-semibold">Diantar</span>
@@ -75,37 +159,46 @@ export default function Payment({
 
                 <label
                   className={`flex cursor-pointer items-center justify-between rounded-xl border p-3 transition ${
-                    orderType === 'pickup'
-                      ? 'border-[#19334b] bg-[#eaf5fe] text-[#19334b]'
-                      : 'border-[#e8e4d8] bg-white text-slate-600 hover:bg-[#f7fbff]'
+                    orderType === "pickup"
+                      ? "border-[#19334b] bg-[#eaf5fe] text-[#19334b]"
+                      : "border-[#e8e4d8] bg-white text-slate-600 hover:bg-[#f7fbff]"
                   }`}
                 >
                   <div className="flex items-center gap-3">
                     <input
                       type="radio"
                       name="orderType"
-                      checked={orderType === 'pickup'}
-                      onChange={() => setOrderType('pickup')}
+                      checked={orderType === "pickup"}
+                      onChange={() => setOrderType("pickup")}
                       className="text-[#19334b]"
                     />
-                    <span className="text-sm font-semibold">Ambil di stand</span>
+                    <span className="text-sm font-semibold">
+                      Ambil di stand
+                    </span>
                   </div>
                 </label>
               </div>
 
               <p className="text-xs text-slate-500">
-                {orderType === 'delivery'
-                  ? 'Pesanan akan dikirim ke lokasi pelanggan.'
-                  : 'Pesanan siap diambil langsung di stand kami.'}
+                {orderType === "delivery"
+                  ? "Pesanan akan dikirim ke lokasi pelanggan."
+                  : "Pesanan siap diambil langsung di stand kami."}
               </p>
             </div>
 
             <div className="space-y-3">
-              <label className="text-sm font-bold text-[#19334b]">Metode pembayaran</label>
+              <label className="text-sm font-bold text-[#19334b]">
+                Metode pembayaran
+              </label>
 
               <div className="space-y-2">
                 <label className="flex cursor-pointer items-center space-x-3 rounded-xl border border-[#e8e4d8] p-3 transition hover:bg-[#f7fbff]">
-                  <input type="radio" name="payment" defaultChecked className="text-[#19334b]" />
+                  <input
+                    type="radio"
+                    name="payment"
+                    defaultChecked
+                    className="text-[#19334b]"
+                  />
                   <span className="text-sm font-medium text-[#19334b]">
                     Bayar dengan E-Wallet / QRIS
                   </span>
@@ -114,9 +207,11 @@ export default function Payment({
             </div>
 
             <div className="space-y-4 border-t border-[#e8e4d8] pt-4">
-              <h4 className="text-sm font-extrabold text-[#19334b]">Billing details</h4>
+              <h4 className="text-sm font-extrabold text-[#19334b]">
+                Billing details
+              </h4>
 
-              {orderType === 'delivery' && (
+              {orderType === "delivery" && (
                 <div>
                   <label className="mb-1 block text-xs font-bold text-slate-600">
                     Alamat pengiriman
@@ -128,7 +223,21 @@ export default function Payment({
                   />
                 </div>
               )}
+              <div>
+                <label className="mb-1 block text-xs font-bold text-slate-600">
+                  Nama pelanggan
+                </label>
 
+                <input
+                  type="text"
+                  value={customerName}
+                  onChange={(e) => setCustomerName(e.target.value)}
+                  placeholder="Nama kamu"
+                  required
+                  maxLength={100}
+                  className="w-full rounded-xl border border-[#dfe7ee] bg-[#fffdf5] px-4 py-2.5 text-sm text-[#19334b] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#a2d6f9]"
+                />
+              </div>
               <div>
                 <label className="mb-1 block text-xs font-bold text-slate-600">
                   Nomor Telepon
@@ -136,17 +245,8 @@ export default function Payment({
                 <input
                   type="text"
                   placeholder="Nomor telepon aktif"
-                  className="w-full rounded-xl border border-[#dfe7ee] bg-[#fffdf5] px-4 py-2.5 text-sm text-[#19334b] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#a2d6f9]"
-                />
-              </div>
-
-              <div>
-                <label className="mb-1 block text-xs font-bold text-slate-600">
-                  Kode Kupon
-                </label>
-                <input
-                  type="text"
-                  placeholder="Promo code"
+                  value={customerPhone}
+                  onChange={(e) => setCustomerPhone(e.target.value)}
                   className="w-full rounded-xl border border-[#dfe7ee] bg-[#fffdf5] px-4 py-2.5 text-sm text-[#19334b] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#a2d6f9]"
                 />
               </div>
@@ -161,10 +261,22 @@ export default function Payment({
               orderType={orderType}
               onChangeQuantity={onChangeCartQuantity}
               onRemove={onRemoveFromCart}
+              onPlaceOrder={handlePlaceOrder}
+              submitting={submitting}
+              orderId={orderId}
             />
           </div>
         </div>
       </div>
+      {toast && (
+        <Toast
+          title={toast.title}
+          message={toast.message}
+          type={toast.type}
+          isVisible={toast.isVisible}
+          onClose={onClearToast}
+        />
+      )}
     </div>
   );
 }

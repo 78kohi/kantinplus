@@ -1,31 +1,38 @@
-import React from 'react';
+import React from "react";
 
 const formatRupiah = (amount) =>
-  `Rp ${Number(amount || 0).toLocaleString('id-ID')}`;
+  `Rp ${Number(amount || 0).toLocaleString("id-ID")}`;
 
 export default function OrderSummary({
   items = [],
   subtotal = 0,
   shippingCost = 10000,
-  orderType = 'delivery',
+  orderType = "delivery",
   onChangeQuantity,
   onRemove,
+  onPlaceOrder,
+  submitting = false,
+  orderId = null,
 }) {
   const total = subtotal + shippingCost;
-  const shippingLabel = orderType === 'delivery' ? 'Delivery' : 'Pickup';
+  const shippingLabel = orderType === "delivery" ? "Delivery" : "Pickup";
 
   return (
     <div className="w-full max-w-md rounded-2xl border border-[#e8e4d8] bg-[#fffdf5] p-6 shadow-[0_12px_40px_rgba(25,51,75,0.08)]">
       <div className="mb-4 border-b border-[#e8e4d8] pb-2">
-        <h3 className="text-xl font-extrabold text-[#19334b]">Ringkasan Pembayaran</h3>
+        <h3 className="text-xl font-extrabold text-[#19334b]">
+          Ringkasan Pembayaran
+        </h3>
         <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-sky-700">
-          {orderType === 'delivery' ? 'Diantar' : 'Ambil di stand'}
+          {orderType === "delivery" ? "Diantar" : "Ambil di stand"}
         </p>
       </div>
 
       <div className="mb-6 space-y-4">
         {items.length === 0 ? (
-          <p className="text-sm text-slate-500">Belum ada produk di keranjang.</p>
+          <p className="text-sm text-slate-500">
+            Belum ada produk di keranjang.
+          </p>
         ) : (
           items.map((item) => (
             <div
@@ -39,9 +46,11 @@ export default function OrderSummary({
                   className="h-12 w-12 rounded-xl border border-slate-100 bg-slate-50 object-contain p-1.5"
                 />
                 <div>
-                  <h4 className="text-sm font-bold text-[#19334b]">{item.name}</h4>
+                  <h4 className="text-sm font-bold text-[#19334b]">
+                    {item.name}
+                  </h4>
                   <p className="text-xs text-slate-500">
-                    {item.quantity} {item.quantity > 1 ? 'pcs' : 'pc'}
+                    {item.quantity} {item.quantity > 1 ? "pcs" : "pc"}
                   </p>
                 </div>
               </div>
@@ -89,24 +98,45 @@ export default function OrderSummary({
       <div className="space-y-2 border-t border-[#e8e4d8] pt-4 text-sm text-slate-600">
         <div className="flex justify-between">
           <span>Subtotal</span>
-          <span className="font-bold !font-inter text-[#19334b]">{formatRupiah(subtotal)}</span>
+          <span className="font-bold !font-inter text-[#19334b]">
+            {formatRupiah(subtotal)}
+          </span>
         </div>
         <div className="flex justify-between">
           <span>{shippingLabel}</span>
-          <span className="font-bold !font-inter text-[#19334b]">{formatRupiah(shippingCost)}</span>
+          <span className="font-bold !font-inter text-[#19334b]">
+            {formatRupiah(shippingCost)}
+          </span>
         </div>
         <div className="flex items-center justify-between border-t border-[#e8e4d8] pt-3 text-base font-extrabold text-[#19334b]">
           <span>Total</span>
-          <span className="text-lg font-black !font-inter text-[#19334b]">{formatRupiah(total)}</span>
+          <span className="text-lg font-black !font-inter text-[#19334b]">
+            {formatRupiah(total)}
+          </span>
         </div>
       </div>
-
-      <button
-        onClick={() => alert('Pesanan Gabin Fla berhasil diproses!')}
-        className="mt-6 w-full rounded-xl bg-[#19334b] py-3 text-sm font-extrabold text-white shadow-lg shadow-[#19334b]/15 transition hover:bg-[#274b6c]"
-      >
-        Place Order
-      </button>
+      {orderId ? (
+        <div
+          role="status"
+          className="mt-6 rounded-xl border border-green-200 bg-green-50 p-4 text-center"
+        >
+          <h4 className="font-extrabold text-green-800">
+            Pesanan berhasil dibuat!
+          </h4>
+          <p className="mt-1 text-sm text-green-700">
+            Nomor pesanan: #{orderId}
+          </p>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={onPlaceOrder}
+          disabled={submitting || items.length === 0}
+          className="mt-6 w-full rounded-xl bg-[#19334b] py-3 text-sm font-extrabold text-white shadow-lg shadow-[#19334b]/15 transition hover:bg-[#274b6c] disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {submitting ? "Memproses pesanan..." : "Place Order"}
+        </button>
+      )}
     </div>
   );
 }

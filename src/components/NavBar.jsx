@@ -1,5 +1,6 @@
 import Cart from "./svg/Cart";
 import Logo from "./Logo";
+import AuthTest from "./AuthTest";
 
 export default function NavBar({ cartCount = 0, onCartClick }) {
   return (
@@ -12,6 +13,7 @@ export default function NavBar({ cartCount = 0, onCartClick }) {
           Kantin<span className="text-[#a2d6f9]">plus</span>
         </div>
       </div>
+      <AuthTest />
       <div className="flex gap-4 items-center">
         <a
           href="#products"

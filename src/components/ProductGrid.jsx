@@ -1,11 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-import { products } from "../data/product";
+import { getProducts } from "../services/productServices";
 
 export default function ProductGrid({ onAddToCart }) {
-  const handleAddToCart = (product, quantity) => {
-    alert(`Berhasil menambahkan ${quantity}x ${product.name} ke keranjang!`);
-  };
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const data = await getProducts();
+        setProducts(data);
+      } catch (err) {
+        setError(err.message || "Gagal memuat produk.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+
+    const handleFocus = () => {
+      loadProducts();
+    };
+
+    window.addEventListener("focus", handleFocus);
+
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+    };
+  }, []);
+
+  if (loading) return <p>Loading products...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  console.log(products);
 
   return (
     <section id="products" className="mt-10 mx-auto max-w-6xl px-4 py-10">

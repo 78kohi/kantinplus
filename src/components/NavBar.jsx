@@ -1,4 +1,4 @@
-import Cart from "./icons/Cart";
+import Cart from "./svg/Cart";
 import Logo from "./Logo";
 
 export default function NavBar({ cartCount = 0, onCartClick }) {

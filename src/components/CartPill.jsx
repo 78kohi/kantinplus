@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Cart from "./icons/Cart";
+import Cart from "./svg/Cart";
 
 export default function CartPill({ cartCount, total, onCartClick }) {
   const [show, setShow] = useState(false);

@@ -16,6 +16,8 @@ export default function Home({
   onAddToCart,
   onChangeCartQuantity,
   onRemoveFromCart,
+  toast,
+  onClearToast,
 }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const closeCart = useCallback(() => setIsCartOpen(false), []);
@@ -47,7 +49,13 @@ export default function Home({
         total={subtotal}
         onCartClick={() => setIsCartOpen(true)}
       />
-      <Toast />
+      <Toast
+        title={toast.title}
+        message={toast.message}
+        type={toast.type}
+        isVisible={toast.isVisible}
+        onClose={onClearToast}
+      />
     </>
   );
 }

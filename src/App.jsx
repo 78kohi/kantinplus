@@ -3,9 +3,12 @@ import Home from './pages/Home'
 import Products from './pages/Products'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer';
+import CartPill from './components/CartPill';
+import Toast from './components/Toast';
 
 function App() {
   const activePage = window.location.pathname === '/' ? 'home' : window.location.pathname.substring(1);
+  let showToast = false;
 
   return (
     <>
@@ -13,6 +16,9 @@ function App() {
       <Home />
       <Products />
       <Footer />
+      
+      <CartPill />
+      {showToast && <Toast />}
     </>
   )
 }

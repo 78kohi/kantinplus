@@ -9,7 +9,7 @@ export default function ProductGrid() {
   };
 
   return (
-    <section className="py-10 px-4 max-w-6xl mx-auto">
+    <section className="mt-5 py-10 px-4 max-w-6xl mx-auto">
       <div className="text-center mb-10">
         <h2 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-blue-800 to-indigo-900 mb-2">
           Gabin Fla Series ✨

@@ -5,7 +5,7 @@ export const products = [
     variant: "Cokelat",
     price: 8000,
     description:
-      "Jajanan tradisional renyah dengan isian adonan fla cokelat manis & legit. Isi 2 pcs per kemasan.",
+      "Jajanan tradisional renyah dengan isian adonan fla cokelat manis & legit",
     image: "https://via.placeholder.com/250/1E293B/FFFFFF?text=Gabin+Cokelat",
   },
   {
@@ -14,7 +14,7 @@ export const products = [
     variant: "Susu",
     price: 8000,
     description:
-      "Biskuit gabin renyah dipadu fla susu creamy dan lumer di mulut. Isi 2 pcs per kemasan.",
+      "Biskuit gabin renyah dipadu fla susu creamy dan lumer di mulut",
     image: "https://via.placeholder.com/250/1E3A8A/FFFFFF?text=Gabin+Susu",
   },
   {
@@ -23,7 +23,7 @@ export const products = [
     variant: "Matcha",
     price: 8000,
     description:
-      "Kombinasi biskuit gabin dengan isian adonan fla matcha kekinian bermutu tinggi. Isi 2 pcs per kemasan.",
+      "Kombinasi biskuit gabin dengan isian adonan fla matcha kekinian bermutu tinggi",
     image: "https://via.placeholder.com/250/0F172A/FFFFFF?text=Gabin+Matcha",
   },
 ];

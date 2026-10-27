@@ -1,3 +1,5 @@
+import Logo from "./Logo";
+
 export default function Footer() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -7,7 +9,7 @@ export default function Footer() {
     <footer className="mx-auto w-full bg-[#1b344d] px-10 pt-10 pb-8 font-sans">
       <div className="flex items-start justify-between">
         <div className="flex items-center space-x-2">
-            <div className="bg-[#a2d6f9] opacity-90 p-1 rounded-md text-white font-[Plus Jakarta Sans] text-xl font-bold">K+</div>
+            <Logo />
             <div className="text-[#5fa8d3] font-[Plus Jakarta Sans] text-2xl font-bold">Kantin<span className="text-[#a2d6f9]">plus</span></div>
         </div>
 

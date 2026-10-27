@@ -9,7 +9,7 @@ export default function ProductCard({ product, onAddToCart }) {
       case 'cokelat':
         return 'bg-amber-100 text-amber-800 border-amber-300';
       case 'susu':
-        return 'bg-blue-100 text-blue-800 border-blue-300';
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       case 'matcha':
         return 'bg-emerald-100 text-emerald-800 border-emerald-300';
       default:
@@ -25,11 +25,27 @@ export default function ProductCard({ product, onAddToCart }) {
     setQuantity(quantity + 1);
   };
 
+  const imageBgStyle = (() => {
+    switch (product?.variant?.toLowerCase()) {
+      case 'cokelat':
+        return 'bg-[#e6ccb2]';
+      case 'susu':
+        return 'bg-[#fefae0]';
+      case 'matcha':
+        return 'bg-[#dde5b6]';
+      default:
+        return 'bg-gradient-to-tr from-slate-100 via-blue-50 to-indigo-100';
+    }
+  })();
+
   return (
     <div className="bg-white/90 backdrop-blur-md rounded-3xl p-4 shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-200 flex flex-col justify-between group transform hover:-translate-y-1">
       <div>
         {/* Container Gambar dengan Background Gradient Nuansa Navy / Slate */}
-        <div className="relative w-full h-48 rounded-2xl overflow-hidden bg-gradient-to-tr from-slate-100 via-blue-50 to-indigo-100 flex items-center justify-center p-3 mb-4">
+        <div className={`
+          relative w-full h-48 rounded-2xl overflow-hidden flex items-center justify-center p-3 mb-4
+          ${imageBgStyle}
+          `}>
           <span className={`absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold border backdrop-blur-sm ${getVariantBadge(product?.variant)}`}>
             {product?.variant || 'Gabin Fla'}
           </span>
@@ -42,10 +58,10 @@ export default function ProductCard({ product, onAddToCart }) {
 
         {/* Detail Produk */}
         <div className="px-1">
-          <h3 className="text-xl font-bold text-gray-800 leading-tight mb-1">
+          <h3 className="text-xl font-bold text-[#19334b] leading-tight mb-1">
             {product?.name || "Gabin Fla"}
           </h3>
-          <p className="text-2xl font-black text-emerald-600 mb-2">
+          <p className="text-2xl font-black text-[#193361] mb-2">
             Rp {(product?.price || 8000).toLocaleString('id-ID')}
           </p>
           <p className="text-xs text-gray-500 font-medium line-clamp-3 leading-relaxed mb-4">
@@ -78,7 +94,7 @@ export default function ProductCard({ product, onAddToCart }) {
 
         <button 
           onClick={() => onAddToCart && onAddToCart(product, quantity)}
-          className="w-11 h-11 bg-slate-900 hover:bg-slate-800 text-white rounded-full flex items-center justify-center shadow-md hover:shadow-slate-400 transition-all duration-300 active:scale-95"
+          className="w-11 h-11 bg-[#a2d6f9] hover:bg-[#83d6f9] text-white rounded-full flex items-center justify-center shadow-md hover:shadow-slate-400 transition-all duration-300 active:scale-95"
           title="Tambah ke Keranjang"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

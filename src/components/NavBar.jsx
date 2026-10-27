@@ -1,6 +1,7 @@
+import Cart from "./icons/Cart";
 import Logo from "./Logo";
 
-export default function NavBar({ activePage }) {
+export default function NavBar({ cartCount = 0, onCartClick }) {
   return (
     <header className="bg-[#F7F8F3] flex items-center justify-between px-4 py-4 shadow-sm relative z-10 top-0">
       <div className="flex items-center space-x-2">
@@ -13,14 +14,8 @@ export default function NavBar({ activePage }) {
       </div>
       <div className="flex gap-4 items-center">
         <a
-          href="#home"
-          className={`text-[#19334b] font-jakarta ${activePage === "home" ? "underline" : ""} text-lg font-semibold hover:text-[#48cae4] transition-colors duration-300`}
-        >
-          Home
-        </a>
-        <a
           href="#products"
-          className={`text-[#19334b] font-jakarta ${activePage === "products" ? "underline" : ""} text-lg font-semibold hover:text-[#48cae4] transition-colors duration-300`}
+          className={`text-[#19334b] font-jakarta text-lg font-semibold hover:text-[#48cae4] transition-colors duration-300`}
         >
           Produk
         </a>
@@ -33,8 +28,18 @@ export default function NavBar({ activePage }) {
           <i className="fa-brands fa-whatsapp text-[#19334b] hover:text-[#48cae4] transition-colors"></i>
           <span>Kontak</span>
         </a>
-        <button className="flex h-[42px] w-[42px] items-center justify-center rounded-full text-[#1b344d] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
-          <i className="fa-solid fa-cart-shopping"></i>
+        <button
+          type="button"
+          onClick={onCartClick}
+          aria-label={cartCount > 0 ? `Buka keranjang, ${cartCount} item` : 'Buka keranjang'}
+          className="relative flex h-10 w-10 items-center justify-center rounded-full text-[#1b344d] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+        >
+          <Cart />
+          {cartCount > 0 && (
+            <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#19334b] px-1 text-[10px] font-bold text-white">
+              {cartCount > 99 ? '99+' : cartCount}
+            </span>
+          )}
         </button>
       </div>
     </header>

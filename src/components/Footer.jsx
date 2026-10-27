@@ -9,15 +9,26 @@ export default function Footer() {
     <footer className="mx-auto w-full bg-[#1b344d] px-10 pt-10 pb-8 font-sans">
       <div className="flex items-start justify-between">
         <div className="flex items-center space-x-2">
-            <Logo />
-            <div className="text-[#5fa8d3] font-[Plus Jakarta Sans] text-2xl font-bold">Kantin<span className="text-[#a2d6f9]">plus</span></div>
+          <Logo />
+          <div className="text-[#5fa8d3] font-[Plus Jakarta Sans] text-2xl font-bold">
+            Kantin<span className="text-[#a2d6f9]">plus</span>
+          </div>
         </div>
 
         <nav className="flex items-center gap-8">
-          <a href="#home" className="text-xl text-white hover:text-sky-200">
+          <a href="#home" className="text-xl text-white font-semibold hover:text-sky-200 transition-colors">
             Home
           </a>
-          <a href="#products" className="text-xl text-white hover:text-sky-200">
+          <a
+            href="https://wa.me/081290902110"
+            target="_blank"
+            rel="noreferrer"
+            className="text-white font-jakarta text-xl font-semibold hover:text-sky-200 transition-colors duration-300 inline-flex items-center"
+          >
+            <i className="fa-brands fa-whatsapp text-white hover:text-sky-200"></i>
+            <span>Kontak</span>
+          </a>
+          <a href="#products" className="text-xl text-white font-semibold hover:text-sky-200">
             Products
           </a>
           <button

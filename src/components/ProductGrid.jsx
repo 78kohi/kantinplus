@@ -1,28 +1,26 @@
-import React from 'react';
-import ProductCard from './ProductCard';
-import { products } from '../data/product';
+import React from "react";
+import ProductCard from "./ProductCard";
+import { products } from "../data/product";
 
-export default function ProductGrid() {
-
+export default function ProductGrid({ onAddToCart }) {
   const handleAddToCart = (product, quantity) => {
     alert(`Berhasil menambahkan ${quantity}x ${product.name} ke keranjang!`);
   };
 
   return (
-    <section className="mt-5 py-10 px-4 max-w-6xl mx-auto">
-      <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-blue-800 to-indigo-900 mb-2">
-          Gabin Fla Series ✨
+    <section id="products" className="mt-10 mx-auto max-w-6xl px-4 py-10">
+      <div className="mb-10 text-center">
+        <h2 className="mb-2 !font-bowlby text-[#5fa8d3] text-4xl font-extrabold md:text-7xl">
+          Produk Kami
         </h2>
-        <p className="text-gray-600 max-w-lg mx-auto text-sm md:text-base">
-          Jajanan tradisional hits biskuit gabin isi adonan fla lumer (2 pcs/kemasan) seharga Rp 8.000!
-        </p>
+        <h3 className="mx-auto mb-2 bg-[#19334b] w-fit py-1 px-4 font-jakarta text-2xl md:text-4xl font-bold text-[#a2d6f9]">
+          Gabin Fla Series
+        </h3>
       </div>
 
-      {/* Tampilan Grid Produk */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {products.map((item) => (
-          <ProductCard key={item.id} product={item} onAddToCart={handleAddToCart} />
+          <ProductCard key={item.id} product={item} onAddToCart={onAddToCart} />
         ))}
       </div>
     </section>

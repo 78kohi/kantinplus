@@ -12,6 +12,7 @@ import Profile from "./pages/Profile";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminProducts from "./pages/AdminProducts";
 import AdminInventory from "./pages/AdminInventory";
+import NotFound from "./pages/NotFound";
 
 const initialToastState = {
   title: "",
@@ -194,6 +195,8 @@ function App() {
 
       <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<Profile />} />
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

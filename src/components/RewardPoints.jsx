@@ -88,7 +88,7 @@ export default function RewardPoints() {
           </p>
 
           <p className="mt-3 text-xs leading-5 text-white/60">
-            Dapatkan 1 poin untuk setiap Rp1.000 pembayaran yang terkonfirmasi.
+            Dapatkan 1 poin untuk setiap pembayaran yang terkonfirmasi.
           </p>
 
           {error && <p className="mt-2 text-xs text-amber-200">{error}</p>}

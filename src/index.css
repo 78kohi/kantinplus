@@ -39,6 +39,29 @@ html, body {
     vertical-align: middle;
 }
 
+
+@keyframes toast-countdown {
+  from {
+    width: 100%;
+  }
+
+  to {
+    width: 0%;
+  }
+}
+
+.toast-countdown {
+  animation: toast-countdown 3s linear forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast-countdown {
+    animation: none;
+    width: 0%;
+  }
+}
+
+
 @keyframes marquee {
   from {
     transform: translateX(0);

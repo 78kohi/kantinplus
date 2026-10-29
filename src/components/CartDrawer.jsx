@@ -120,7 +120,7 @@ export default function CartDrawer({
                   className="flex gap-3 rounded-2xl border border-[#e8e4d8] bg-white p-3 shadow-sm"
                 >
                   <img
-                    src={item.image}
+                    src={item.image_url}
                     alt={item.name}
                     className="h-20 w-20 shrink-0 rounded-xl border border-slate-100 bg-slate-50 object-contain p-1.5"
                   />

@@ -23,7 +23,8 @@ export default function CartPill({ cartCount, total, onCartClick }) {
   return (
     <button
       className={`
-        fixed bottom-6 right-6 z-40 px-4 py-3 flex items-center rounded-full bg-[#59ACF8]
+        hidden md:flex
+        fixed bottom-6 right-6 z-40 px-4 py-3 items-center rounded-full bg-[#59ACF8]
         hover:bg-[#59c0f8] text-white shadow-lg
         transition-all duration-500 ease-out
         transform

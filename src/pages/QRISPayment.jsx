@@ -1,15 +1,60 @@
-
 import { useLocation, useNavigate } from "react-router";
-import { ArrowLeft, Clock3, QrCode } from "lucide-react";
+import { ArrowLeft, Clock3, Download, QrCode } from "lucide-react";
+import qris from "../assets/qris.jpg";
+import { supabase } from "../lib/supabaseClient";
+import { useEffect, useState } from "react";
 
 export default function QRISPayment() {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const [isPaid, setIsPaid] = useState(false);
+
+  const { orderId, items, total, customerName } = state ?? {};
+
+  useEffect(() => {
+    if (!orderId) return;
+
+    let active = true;
+
+    async function checkPayment() {
+      const { data, error } = await supabase
+        .from("orders")
+        .select("payment_status")
+        .eq("id", orderId)
+        .maybeSingle();
+
+      if (error) {
+        console.error("Payment status check failed:", error.message);
+        return;
+      }
+
+      if (active && data?.payment_status === "paid") {
+        navigate("/pesanan-berhasil", {
+          state: {
+            orderId,
+            items,
+            total,
+            customerName,
+          },
+          replace: true,
+        });
+      }
+    }
+
+    checkPayment();
+
+    const interval = setInterval(checkPayment, 3000);
+
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  }, [orderId]);
 
   if (!state?.orderId) {
     return (
-      <main className="min-h-screen grid place-items-center p-6">
-        <div className="text-center space-y-3">
+      <main className="grid min-h-screen place-items-center p-6">
+        <div className="space-y-3 text-center">
           <p>No order details found.</p>
           <button
             onClick={() => navigate("/")}
@@ -22,14 +67,12 @@ export default function QRISPayment() {
     );
   }
 
-  const { orderId, total, customerName } = state;
-
   const formatRupiah = (amount) =>
     new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
       maximumFractionDigits: 0,
-    }).format(amount);
+    }).format(amount ?? 0);
 
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-10">
@@ -49,11 +92,12 @@ export default function QRISPayment() {
             </div>
 
             <h1 className="text-2xl font-bold text-slate-900">
-              Pay with QRIS
+              Bayar dengan QRIS
             </h1>
 
             <p className="mt-2 text-sm text-slate-500">
-              Hi, {customerName}! Complete your payment for order #{orderId}.
+              Hi, {customerName || "there"}! Selesaikan pembayaran anda untuk
+              pesanan #{orderId}.
             </p>
           </div>
 
@@ -64,24 +108,48 @@ export default function QRISPayment() {
             </p>
           </div>
 
-          {/* Replace this placeholder with your real QRIS image later. */}
-          <div className="mx-auto flex aspect-square w-full max-w-[260px] flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-6 text-center">
-            <QrCode size={64} className="text-slate-400" />
-
-            <p className="font-semibold text-slate-700">
-              QRIS placeholder
-            </p>
-
-            <p className="text-sm text-slate-500">
-              Your real payment QR code will appear here.
-            </p>
+          <div className="mx-auto w-full max-w-[280px] overflow-hidden rounded-2xl border border-slate-200 bg-white p-3">
+            <img
+              src={qris}
+              alt="Merchant QRIS payment code"
+              className="block h-auto w-full object-contain"
+            />
+            <a
+              href={qris}
+              download="KantinPlus-QRIS.jpg"
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-[#19334b] px-4 py-3 font-bold text-[#19334b] transition hover:bg-slate-50"
+            >
+              <Download size={18} />
+              Download QRIS
+            </a>
           </div>
 
-          <div className="mt-5 flex items-start gap-3 rounded-xl bg-amber-50 p-4 text-sm text-amber-800">
+          <p className="mt-3 text-center text-xs text-slate-500">
+            Scan QRIS ini menggunakan aplikasi pembayaran yang didukung.
+          </p>
+
+          <div className="mt-5 rounded-xl bg-blue-50 p-4 text-sm text-blue-800">
+            <p className="font-semibold">Cara pembayaran</p>
+            <ol className="mt-2 list-inside list-decimal space-y-2">
+              <li>Scan QRIS di atas.</li>
+              <li>
+                Masukkan nominal persis seperti yang tertera{" "}
+                <strong>{formatRupiah(total)}</strong>.
+              </li>
+              <li>Verifikasi nama merchant dan nominal sebelum membayar.</li>
+              <li>
+                Simpan struk dan tunggu kasir/pengirim untuk memverifikasi
+                pembayaran anda.
+              </li>
+            </ol>
+          </div>
+
+          <div className="mt-4 flex items-start gap-3 rounded-xl bg-amber-50 p-4 text-sm text-amber-800">
             <Clock3 size={20} className="mt-0.5 shrink-0" />
             <p>
-              Your order is awaiting payment. This placeholder cannot be
-              scanned. Please pay only when the real QRIS code is available.
+              Order #{orderId} sedang menunggu konfirmasi pembayaran. Pesanan
+              anda akan tetap tertunda sebelum kasir/pengirim memverifikasi
+              pembayaran anda.
             </p>
           </div>
 

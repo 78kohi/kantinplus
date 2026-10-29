@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router";
-import { CheckCircle2, Package } from "lucide-react";
+import { CheckCircle2, Download, Package } from "lucide-react";
 
 const formatRupiah = (amount) =>
   `Rp ${Number(amount || 0).toLocaleString("id-ID")}`;
 
 export default function OrderSuccess() {
   const { state } = useLocation();
+
+  const handleDownloadReceipt = () => {
+    window.print();
+  };
 
   if (!state?.orderId) {
     return (
@@ -15,10 +19,7 @@ export default function OrderSuccess() {
           <h1 className="text-xl font-extrabold text-[#19334b]">
             Pesanan tidak ditemukan
           </h1>
-          <Link
-            to="/"
-            className="mt-4 inline-block font-semibold text-sky-700"
-          >
+          <Link to="/" className="mt-4 inline-block font-semibold text-sky-700">
             Kembali ke beranda
           </Link>
         </div>
@@ -36,11 +37,11 @@ export default function OrderSuccess() {
         </div>
 
         <h1 className="mt-5 text-2xl font-extrabold text-[#19334b]">
-          Pesanan berhasil dibuat!
+          Pembayaran selesai!
         </h1>
 
         <p className="mt-2 text-sm text-slate-500">
-          Terima kasih sudah berbelanja di KantinPlus, {customerName}.
+          Terima kasih sudah berbelanja di KantinPlus, {customerName}!
         </p>
 
         <div className="mt-6 rounded-2xl bg-[#f1f8fc] p-4">
@@ -66,9 +67,7 @@ export default function OrderSuccess() {
                   {item.name} × {item.quantity}
                 </span>
                 <span className="font-semibold text-[#19334b]">
-                  {formatRupiah(
-                    Number(item.price || 0) * item.quantity
-                  )}
+                  {formatRupiah(Number(item.price || 0) * item.quantity)}
                 </span>
               </div>
             ))}
@@ -82,10 +81,13 @@ export default function OrderSuccess() {
           </div>
         </div>
 
-        <p className="mt-5 text-sm text-slate-500">
-          Pesananmu sedang menunggu proses selanjutnya. Silakan tunjukkan
-          nomor pesanan kepada petugas stand.
-        </p>
+        <button
+          onClick={handleDownloadReceipt}
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-[#19334b] bg-white px-5 py-3.5 text-sm font-bold text-[#19334b] transition hover:bg-slate-50 active:scale-[0.99]"
+        >
+          <Download size={18} />
+          Download struk (PDF)
+        </button>
 
         <Link
           to="/"

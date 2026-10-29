@@ -41,7 +41,7 @@ export default function OrderSummary({
             >
               <div className="flex items-center space-x-3">
                 <img
-                  src={item.image}
+                  src={item.image_url}
                   alt={item.name}
                   className="h-12 w-12 rounded-xl border border-slate-100 bg-slate-50 object-contain p-1.5"
                 />

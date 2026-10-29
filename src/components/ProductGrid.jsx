@@ -43,7 +43,7 @@ export default function ProductGrid({ onAddToCart }) {
   return (
     <section id="products" className="mt-10 mx-auto max-w-6xl px-4 py-10">
       <div className="mb-10 text-center">
-        <h2 className="mb-2 !font-bowlby text-[#5fa8d3] text-4xl font-extrabold md:text-7xl">
+        <h2 className="mb-2 !font-bowlby text-[#5fa8d3] text-5xl font-extrabold md:text-7xl">
           Produk Kami
         </h2>
         <h3 className="mx-auto mb-2 bg-[#19334b] w-fit py-1 px-4 font-jakarta text-2xl md:text-4xl font-bold text-[#a2d6f9]">

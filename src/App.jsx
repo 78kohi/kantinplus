@@ -6,6 +6,9 @@ import OrderSuccess from "./pages/OrderSuccess";
 import QRISPayment from "./pages/QRISPayment";
 import AdminOrders from "./pages/AdminOrders";
 import AdminRoute from "./components/AdminRoute";
+import OrderHistory from "./pages/OrderHistory"
+import Login from "./pages/Login";
+import Profile from "./pages/Profile";
 
 const initialToastState = {
   title: "",
@@ -177,10 +180,14 @@ function App() {
       />
       <Route path="/pembayaran" element={<QRISPayment />} />
       <Route path="/pesanan-berhasil" element={<OrderSuccess />} />
+      <Route path="/riwayat-pesanan" element={<OrderHistory />} />
 
       <Route element={<AdminRoute />}>
         <Route path="/admin/orders" element={<AdminOrders />} />
       </Route>
+
+      <Route path="/login" element={<Login />} />
+      <Route path="/profile" element={<Profile />} />
     </Routes>
   );
 }

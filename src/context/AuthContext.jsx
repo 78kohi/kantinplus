@@ -1,10 +1,4 @@
-
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 import { supabase } from "../lib/supabaseClient";
 import {
@@ -18,6 +12,9 @@ const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [profileLoading, setProfileLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
@@ -54,6 +51,56 @@ export function AuthProvider({ children }) {
     };
   }, []);
 
+  useEffect(() => {
+    let active = true;
+
+    async function loadUserData() {
+      // Reset data when the user changes
+      setUsername("");
+      setIsAdmin(false);
+
+      if (!user) {
+        setProfileLoading(false);
+        return;
+      }
+
+      setProfileLoading(true);
+
+      try {
+        const [profileResult, adminResult] = await Promise.all([
+          supabase
+            .from("profiles")
+            .select("display_name")
+            .eq("id", user.id)
+            .maybeSingle(),
+
+          supabase.rpc("is_admin"),
+        ]);
+
+        if (profileResult.error) throw profileResult.error;
+        if (adminResult.error) throw adminResult.error;
+
+        if (!active) return;
+
+        setUsername(profileResult.data?.display_name ?? "");
+        setIsAdmin(adminResult.data === true);
+      } catch (error) {
+        if (!active) return;
+
+        console.error("Failed to load user data:", error.message);
+        // Keep safe defaults if fetching fails
+      } finally {
+        if (active) setProfileLoading(false);
+      }
+    }
+
+    loadUserData();
+
+    return () => {
+      active = false;
+    };
+  }, [user]);
+
   async function signUp(email, password, displayName) {
     return register(email, password, displayName);
   }
@@ -68,7 +115,16 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, signUp, signIn, signOut }}
+      value={{
+        user,
+        username,
+        isAdmin,
+        loading,
+        profileLoading,
+        signUp,
+        signIn,
+        signOut,
+      }}
     >
       {children}
     </AuthContext.Provider>

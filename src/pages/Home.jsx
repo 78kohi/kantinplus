@@ -9,6 +9,7 @@ import CartDrawer from "../components/CartDrawer";
 import HeroArt from "../components/HeroArt";
 import { useCallback, useState } from "react";
 import AuthStatus from "../components/AuthStatus";
+import CartMobile from "../components/CartMobile";
 
 export default function Home({
   cartItems,
@@ -28,13 +29,12 @@ export default function Home({
       <NavBar cartCount={cartCount} onCartClick={() => setIsCartOpen(true)} />
       <main>
         <div className="bg-[#F7F8F3] min-h-screen relative isolate">
-          <div className="relative z-10 flex min-h-screen flex-col justify-center gap-10 overflow-hidden px-5 py-28 sm:px-8 md:flex-row md:items-center md:justify-start md:gap-0 md:px-20 md:py-40">
+          <div className="flex flex-col md:flex-row relative z-10 min-h-screen px-5 py-24 items-top justify-center gap-8 md:flex-row md:px-20 md:py-24 md:justify-start md:gap-0">
             <HeroContent />
             <HeroArt />
           </div>
         </div>
         <Products onAddToCart={onAddToCart} />
-        <AuthStatus />
       </main>
       <Footer />
 
@@ -57,6 +57,11 @@ export default function Home({
         type={toast.type}
         isVisible={toast.isVisible}
         onClose={onClearToast}
+      />
+      <CartMobile
+        cartCount={cartCount}
+        total={subtotal}
+        onCartClick={() => setIsCartOpen(true)}
       />
     </>
   );

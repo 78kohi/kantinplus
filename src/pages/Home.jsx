@@ -8,7 +8,6 @@ import Toast from "../components/Toast";
 import CartDrawer from "../components/CartDrawer";
 import HeroArt from "../components/HeroArt";
 import { useCallback, useState } from "react";
-import AuthStatus from "../components/AuthStatus";
 import CartMobile from "../components/CartMobile";
 
 export default function Home({

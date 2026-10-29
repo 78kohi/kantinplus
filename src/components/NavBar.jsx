@@ -1,6 +1,5 @@
 import Cart from "./svg/Cart";
 import Logo from "./Logo";
-import AuthTest from "./AuthTest";
 import { useState } from "react";
 import { Menu, UserRound, X } from "lucide-react";
 import MenuDropdown from "./MenuDropdown";

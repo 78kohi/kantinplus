@@ -63,7 +63,7 @@ Sebelum menjalankan proyek, pastikan perangkat sudah memiliki:
 
 ```bash
 git clone https://github.com/78kohi/kantinplus.git
-cd kantinplus>
+cd kantinplus
 ```
 
 ### 2. Instal dependensi

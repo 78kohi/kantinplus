@@ -131,7 +131,16 @@ export default function Profile() {
                   {name}
                 </h1>
               </div>
-              <p>{isAdmin ? "Admin" : ""}</p>
+              <div className="flex flex-col text-right">
+                <p className="font-extrabold">{isAdmin ? "(Admin)" : ""}</p>
+                <Link
+                  className="flex items-center gap-2"
+                  to="/admin"
+                >
+                  <p>Ke dasbor admin</p>
+                  <ArrowRight size={20} className="shrink-0 text-slate-400" />
+                </Link>
+              </div>
             </div>
           </div>
 

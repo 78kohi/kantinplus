@@ -69,7 +69,8 @@ export default function ProductCard({ product, onAddToCart }) {
             {product?.name || "Gabin Fla"}
           </h3>
           <p className="text-2xl font-black text-[#193361] mb-2">
-            Rp {(product?.price || 8000).toLocaleString("id-ID")}
+            Rp {(product?.price || 10000).toLocaleString("id-ID")}
+            <span className="text-sm font-bold">/ 3pcs</span>
           </p>
           <p className="text-xs text-gray-500 font-medium line-clamp-3 leading-relaxed mb-4">
             {product?.description ||

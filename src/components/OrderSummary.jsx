@@ -6,16 +6,36 @@ const formatRupiah = (amount) =>
 export default function OrderSummary({
   items = [],
   subtotal = 0,
-  shippingCost = 10000,
-  orderType = "delivery",
+  shippingCost = 0,
+  orderType = "pickup",
   onChangeQuantity,
   onRemove,
   onPlaceOrder,
   submitting = false,
   orderId = null,
+  rewardEnabled = false,
+  onToggleReward,
+  rewardProducts = [],
+  selectedRewardProductId = "",
+  onSelectRewardProduct,
+  rewardPoints = 0,
+  isAuthenticated = false,
 }) {
-  const total = subtotal + shippingCost;
-  const shippingLabel = orderType === "delivery" ? "Delivery" : "Pickup";
+  const selectedReward = rewardProducts.find(
+    (product) => String(product.id) === String(selectedRewardProductId),
+  );
+
+  const pointsRequired = selectedReward
+    ? Math.ceil(Number(selectedReward.price) / 1000)
+    : 0;
+
+  const rewardOnly = items.length === 0 && rewardEnabled;
+  const total = subtotal + (rewardOnly ? 0 : shippingCost);
+  const canRedeem =
+    isAuthenticated && rewardPoints >= pointsRequired && pointsRequired > 0;
+
+  console.log(items.length)
+  console.log(rewardOnly, rewardEnabled)
 
   return (
     <div className="w-full max-w-md rounded-2xl border border-[#e8e4d8] bg-[#fffdf5] p-6 shadow-[0_12px_40px_rgba(25,51,75,0.08)]">
@@ -24,14 +44,18 @@ export default function OrderSummary({
           Ringkasan Pembayaran
         </h3>
         <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-sky-700">
-          {orderType === "delivery" ? "Diantar" : "Ambil di stand"}
+          {rewardOnly
+            ? "Penukaran reward · Ambil di stand"
+            : orderType === "delivery"
+              ? "Diantar"
+              : "Ambil di stand"}
         </p>
       </div>
 
       <div className="mb-6 space-y-4">
         {items.length === 0 ? (
           <p className="text-sm text-slate-500">
-            Belum ada produk di keranjang.
+            Belum ada produk reguler di keranjang.
           </p>
         ) : (
           items.map((item) => (
@@ -54,10 +78,12 @@ export default function OrderSummary({
                   </p>
                 </div>
               </div>
+
               <div className="flex flex-col items-end gap-1">
                 <span className="text-sm font-extrabold text-[#19334b]">
                   {formatRupiah(Number(item.price || 0) * item.quantity)}
                 </span>
+
                 {onChangeQuantity && (
                   <div className="flex items-center gap-2 text-xs text-slate-500">
                     <button
@@ -68,7 +94,9 @@ export default function OrderSummary({
                     >
                       −
                     </button>
+
                     <span>{item.quantity}</span>
+
                     <button
                       type="button"
                       onClick={() => onChangeQuantity(item.id, 1)}
@@ -77,6 +105,7 @@ export default function OrderSummary({
                     >
                       +
                     </button>
+
                     {onRemove && (
                       <button
                         type="button"
@@ -95,26 +124,118 @@ export default function OrderSummary({
         )}
       </div>
 
+      <div className="mb-5 rounded-xl border border-[#d9eaf7] bg-[#f0f8ff] p-4">
+        <label className="flex cursor-pointer items-start gap-3">
+          <input
+            type="checkbox"
+            checked={rewardEnabled}
+            onChange={(event) => onToggleReward?.(event.target.checked)}
+            className="mt-1 accent-[#19334b]"
+          />
+
+          <span>
+            <span className="block text-sm font-extrabold text-[#19334b]">
+              Tukarkan poin dengan produk
+            </span>
+            <span className="mt-1 block text-xs text-slate-600">
+              Gunakan poin untuk mengambil satu produk gratis.
+            </span>
+          </span>
+        </label>
+
+        {rewardEnabled && (
+          <div className="mt-4 space-y-3">
+            <p className="text-sm font-bold text-[#19334b]">
+              Poin tersedia: {rewardPoints}
+            </p>
+
+            {!isAuthenticated ? (
+              <p className="text-xs text-rose-600">
+                Login terlebih dahulu untuk menukarkan poin.
+              </p>
+            ) : (
+              <>
+                <label
+                  htmlFor="reward-product"
+                  className="block text-xs font-bold text-slate-600"
+                >
+                  Pilih produk reward
+                </label>
+
+                <select
+                  id="reward-product"
+                  value={selectedRewardProductId}
+                  onChange={(event) =>
+                    onSelectRewardProduct?.(event.target.value)
+                  }
+                  className="w-full rounded-xl border border-[#dfe7ee] bg-white px-3 py-2.5 text-sm text-[#19334b] focus:outline-none focus:ring-2 focus:ring-[#a2d6f9]"
+                >
+                  <option value="">Pilih produk...</option>
+
+                  {rewardProducts.map((product) => {
+                    const cost = Math.ceil(Number(product.price) / 1000);
+
+                    return (
+                      <option key={product.id} value={product.id}>
+                        {product.name} — {cost} poin
+                      </option>
+                    );
+                  })}
+                </select>
+
+                {selectedReward && (
+                  <div className="rounded-lg bg-white p-3 text-sm">
+                    <p className="font-bold text-[#19334b]">
+                      {selectedReward.name}
+                    </p>
+                    <p className="mt-1 text-slate-600">
+                      Biaya: {pointsRequired} poin
+                    </p>
+                    <p className="text-slate-600">
+                      Sisa poin: {rewardPoints - pointsRequired}
+                    </p>
+
+                    {!canRedeem && (
+                      <p className="mt-2 text-xs font-semibold text-rose-600">
+                        Poin kamu belum cukup.
+                      </p>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
+      </div>
+
       <div className="space-y-2 border-t border-[#e8e4d8] pt-4 text-sm text-slate-600">
         <div className="flex justify-between">
-          <span>Subtotal</span>
-          <span className="font-bold !font-inter text-[#19334b]">
+          <span>Subtotal produk reguler</span>
+          <span className="font-bold text-[#19334b]">
             {formatRupiah(subtotal)}
           </span>
         </div>
+
         <div className="flex justify-between">
-          <span>{shippingLabel}</span>
-          <span className="font-bold !font-inter text-[#19334b]">
-            {formatRupiah(shippingCost)}
+          <span>{orderType === "delivery" ? "Delivery" : "Pickup"}</span>
+          <span className="font-bold text-[#19334b]">
+            {formatRupiah(rewardOnly ? 0 : shippingCost)}
           </span>
         </div>
+
+        {selectedReward && rewardEnabled && (
+          <div className="flex justify-between text-sky-700">
+            <span>Produk reward</span>
+            <span className="font-bold">−{pointsRequired} poin</span>
+          </div>
+        )}
+
         <div className="flex items-center justify-between border-t border-[#e8e4d8] pt-3 text-base font-extrabold text-[#19334b]">
-          <span>Total</span>
-          <span className="text-lg font-black !font-inter text-[#19334b]">
-            {formatRupiah(total)}
-          </span>
+          <span>Total bayar</span>
+          <span className="text-lg font-black">{formatRupiah(total)}</span>
         </div>
       </div>
+
       {orderId ? (
         <div
           role="status"
@@ -131,10 +252,19 @@ export default function OrderSummary({
         <button
           type="button"
           onClick={onPlaceOrder}
-          disabled={submitting || items.length === 0}
+          disabled={
+            submitting ||
+            (items.length === 0 && !rewardEnabled) ||
+            (rewardEnabled &&
+              (!isAuthenticated || !selectedReward || !canRedeem))
+          }
           className="mt-6 w-full rounded-xl bg-[#19334b] py-3 text-sm font-extrabold text-white shadow-lg shadow-[#19334b]/15 transition hover:bg-[#274b6c] disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {submitting ? "Memproses pesanan..." : "Place Order"}
+          {submitting
+            ? "Memproses pesanan..."
+            : rewardOnly
+              ? "Tukarkan poin"
+              : "Place Order"}
         </button>
       )}
     </div>

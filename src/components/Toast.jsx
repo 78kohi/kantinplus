@@ -42,10 +42,11 @@ export default function Toast({
 
     const timer = window.setTimeout(() => {
       setShow(false);
+      onClose?.();
     }, DURATION);
 
     return () => window.clearTimeout(timer);
-  }, [isVisible, message]);
+  }, [isVisible, message, onClose]);
 
   if (!mounted || !message) return null;
 
@@ -114,6 +115,7 @@ export default function Toast({
             type="button"
             onClick={() => {
               setShow(false);
+              onClose?.();
             }}
             aria-label="Dismiss notification"
             className="

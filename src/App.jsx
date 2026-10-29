@@ -9,6 +9,9 @@ import AdminRoute from "./components/AdminRoute";
 import OrderHistory from "./pages/OrderHistory"
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminProducts from "./pages/AdminProducts";
+import AdminInventory from "./pages/AdminInventory";
 
 const initialToastState = {
   title: "",
@@ -183,7 +186,10 @@ function App() {
       <Route path="/riwayat-pesanan" element={<OrderHistory />} />
 
       <Route element={<AdminRoute />}>
-        <Route path="/admin/orders" element={<AdminOrders />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/pesanan" element={<AdminOrders />} />
+        <Route path="/admin/produk" element={<AdminProducts />} />
+        <Route path="/admin/inventori" element={<AdminInventory />} />
       </Route>
 
       <Route path="/login" element={<Login />} />

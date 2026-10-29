@@ -9,35 +9,56 @@ export default function QRISPayment() {
   const navigate = useNavigate();
   const [isPaid, setIsPaid] = useState(false);
 
-  const { orderId, items, total, customerName } = state ?? {};
+  const { orderId, items, total, customerName, guestToken } = state ?? {};
 
   useEffect(() => {
     if (!orderId) return;
 
     let active = true;
+    let checking = false;
 
     async function checkPayment() {
-      const { data, error } = await supabase
-        .from("orders")
-        .select("payment_status")
-        .eq("id", orderId)
-        .maybeSingle();
+      try {
+        let paymentStatus;
 
-      if (error) {
-        console.error("Payment status check failed:", error.message);
-        return;
-      }
+        if (guestToken) {
+          const { data, error } = await supabase.rpc(
+            "get_guest_order_payment_status",
+            {
+              p_order_id: orderId,
+              p_guest_token: guestToken,
+            },
+          );
 
-      if (active && data?.payment_status === "paid") {
-        navigate("/pesanan-berhasil", {
-          state: {
-            orderId,
-            items,
-            total,
-            customerName,
-          },
-          replace: true,
-        });
+          if (error) {
+            console.error("Guest payment status check failed:", error.message);
+            return;
+          }
+
+          paymentStatus = data;
+        } else {
+          const { data, error } = await supabase
+            .from("orders")
+            .select("payment_status")
+            .eq("id", orderId)
+            .maybeSingle();
+
+          if (error) {
+            console.error("Payment status check failed:", error.message);
+            return;
+          }
+
+          paymentStatus = data?.payment_status;
+        }
+
+        if (active && paymentStatus === "paid") {
+          navigate("/pesanan-berhasil", {
+            state: { orderId, items, total, customerName },
+            replace: true,
+          });
+        }
+      } catch (error) {
+        console.error("Payment status check failed:", error);
       }
     }
 
@@ -49,7 +70,7 @@ export default function QRISPayment() {
       active = false;
       clearInterval(interval);
     };
-  }, [orderId]);
+  }, [orderId, items, total, customerName, navigate]);
 
   if (!state?.orderId) {
     return (

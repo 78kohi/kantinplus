@@ -91,9 +91,7 @@ export default function Profile() {
   if (!user) {
     return <Navigate to="/login" replace />;
   }
-
-  console.log(user);
-
+  
   const name = user.user_metadata?.display_name || "KantinPlus Customer";
 
   return (

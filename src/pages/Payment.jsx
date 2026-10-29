@@ -168,7 +168,6 @@ export default function Payment({
   }, []);
 
   const handleRewardToggle = (enabled) => {
-    console.log("Reward checkbox changed:", enabled);
     setRewardEnabled(enabled);
     setSelectedRewardProductId("");
 

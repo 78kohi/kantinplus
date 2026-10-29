@@ -34,9 +34,6 @@ export default function OrderSummary({
   const canRedeem =
     isAuthenticated && rewardPoints >= pointsRequired && pointsRequired > 0;
 
-  console.log(items.length)
-  console.log(rewardOnly, rewardEnabled)
-
   return (
     <div className="w-full max-w-md rounded-2xl border border-[#e8e4d8] bg-[#fffdf5] p-6 shadow-[0_12px_40px_rgba(25,51,75,0.08)]">
       <div className="mb-4 border-b border-[#e8e4d8] pb-2">

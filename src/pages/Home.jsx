@@ -27,7 +27,7 @@ export default function Home({
     <>
       <NavBar cartCount={cartCount} onCartClick={() => setIsCartOpen(true)} />
       <main>
-        <div className="bg-[#F7F8F3] min-h-screen xl:min-h-auto xl:max-h-[80vh] relative isolate">
+        <div className="bg-[#F7F8F3] min-h-screen relative isolate">
           <div className="flex flex-col md:flex-row relative z-10 min-h-screen px-5 py-24 items-top justify-center gap-8 md:flex-row md:px-20 md:py-24 md:justify-start md:gap-0">
             <HeroContent />
             <HeroArt />

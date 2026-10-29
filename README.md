@@ -38,12 +38,13 @@ Terima kasih kepada semua anggota tim yang telah berkontribusi dalam perencanaan
 
 | Nama | Peran
 |---|---|
-| Ganta  [@78kohi](https://github.com/78kohi) | Project leader & Fullstack developer
-| Morin  [@mylope<3](https://github.com/cintakuw) | UI/UX Designer & Product Manager
-| Yuan  [@yuannn15](https://github.com/yuannn15) | Frontend developer
-| Pistio  [@pstakaa](https://github.com/pstakaa) | Backend developer
+| Ganta  [@78kohi](https://github.com/78kohi) | Project leader & Fullstack developer |
+| Morin  [@mylope<3](https://github.com/cintakuw) | UI/UX Designer & Product Manager |
+| Yuan  [@yuannn15](https://github.com/yuannn15) | Frontend developer |
+| Pistio  [@pstakaa](https://github.com/pstakaa) | Backend developer |
+| Barra  [@barra](https://github.com/mboh) | Frontend developer |
 | Juna  [@junz](https://github.com/gaero) | QA Tester
-| Aura  [@rawisnainiyuda](https://github.com/rawisnainiyuda) | Frontend developer
+| Aura  [@rawisnainiyuda](https://github.com/rawisnainiyuda) | Frontend developer |
 
 ## 💗 Special Thanks
 

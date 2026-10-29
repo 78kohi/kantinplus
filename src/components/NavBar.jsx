@@ -35,7 +35,7 @@ export default function NavBar({ cartCount = 0, onCartClick }) {
           Produk
         </a>
         <a
-          href="https://wa.me/081290902110"
+          href="https://wa.me/6281290902110"
           target="_blank"
           rel="noreferrer"
           className="text-[#19334b] font-jakarta text-lg font-semibold hover:text-[#48cae4] transition-colors duration-300 items-center hidden md:inline-flex"

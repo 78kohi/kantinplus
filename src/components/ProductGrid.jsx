@@ -38,10 +38,8 @@ export default function ProductGrid({ onAddToCart }) {
   if (loading) return <p>Loading products...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  console.log(products);
-
   return (
-    <section id="products" className="mt-10 mx-auto max-w-6xl px-4 py-10">
+    <section id="products" className="mt-30 mx-auto max-w-6xl px-4 py-10">
       <div className="mb-10 text-center">
         <h2 className="mb-2 !font-bowlby text-[#5fa8d3] text-5xl font-extrabold md:text-7xl">
           Produk Kami

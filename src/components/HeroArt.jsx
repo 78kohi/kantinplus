@@ -4,7 +4,7 @@ import Sparkle from "../components/svg/Sparkle.jsx";
 
 export default function HeroArt() {
   return (
-    <div className="relative isolate mt-0 h-[280px] w-full min-w-0 flex-1 sm:h-[360px] md:h-auto md:max-h-[420px] md:max-w-[420px]">
+    <div className="relative isolate mt-0 h-[280px] w-full min-w-0 flex-1 sm:h-[360px] md:h-auto md:max-h-[420px] md:max-w-[420px] xl:h-auto xl:max-h-[500px] xl:max-w-[550px]">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 800 800"
@@ -21,7 +21,7 @@ export default function HeroArt() {
       <img
         src={gabin}
         alt="Gabin crackers"
-        className="relative z-10 mx-auto w-[170px] mt-10 md:mt-7 md:w-[200px]"
+        className="relative z-10 mx-auto w-[170px] mt-10 md:mt-7 xl:mt-15 md:w-[200px]"
       />
 
       <img

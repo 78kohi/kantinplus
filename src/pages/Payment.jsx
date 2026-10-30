@@ -421,7 +421,7 @@ export default function Payment({
                 {rewardOnly
                   ? "Reward-only wajib diambil langsung di stand."
                   : orderType === "delivery"
-                    ? "Biaya pengiriman Rp10.000."
+                    ? "Biaya pengiriman Rp2.000."
                     : "Pesanan siap diambil langsung di stand."}
               </p>
             </div>

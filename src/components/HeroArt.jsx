@@ -21,7 +21,7 @@ export default function HeroArt() {
       <img
         src={gabin}
         alt="Gabin crackers"
-        className="relative z-10 mx-auto w-[170px] mt-10 md:mt-7 xl:mt-15 md:w-[200px]"
+        className="relative z-10 mx-auto w-[155px] mt-10 md:mt-7 xl:mt-15 md:w-[200px]"
       />
 
       <img

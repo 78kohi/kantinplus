@@ -410,9 +410,7 @@ export default function AdminDashboard() {
               <p className="mt-1 text-2xl font-bold">
                 {loading ? "—" : stats.totalProducts}
               </p>
-           < 1ae62fb (HEAD -> main) fix: update shipping cost message in Payment page and adjust image width in HeroArt component
-> 23248b4 (origin/main, origin/HEAD) Update README.md
-> dcfa173 Fix formatting in README for clone instructions </div>
+            </div>
 
             <div className="mt-3 rounded-2xl bg-amber-50 p-4">
               <p className="text-sm text-amber-700">Stok menipis (≤ 5)</p>
